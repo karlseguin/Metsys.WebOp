@@ -23,8 +23,10 @@ namespace Metsys.WebOp.Mvc
             var extension = Path.GetExtension(context.Request.Url.AbsolutePath);
             if (_longCacheExtensions.Contains(extension))
             {
+#if !DEBUG
                 context.Response.CacheControl = "Public";
                 context.Response.Expires = 44000; //slightly over 1 month
+#endif
             }
         }
     }
