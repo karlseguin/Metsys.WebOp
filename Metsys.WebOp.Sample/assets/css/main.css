@@ -1,0 +1,38 @@
+html,body{margin:0;padding:0}
+body{font-family:Verdana,Serif;font-size:90%;background:#fff;color:#111;}
+a{color:#369;}
+h3{font-size:1.2em;font-variant:small-caps;margin-bottom:0px;color:#369;}
+h3.title{margin-bottom:15px;}
+.clear{clear:both;}
+
+#site{background:#fff url('../images/body_background.gif?b6a12700') repeat-y right;}
+#header{background:#28313A;height:170px;border-bottom:4px solid #fff;}
+#header img{margin:60px 0px 0px 75px;}
+#header h2{color:#fff;font-size:2.5em;margin-top:0px;padding:55px;}
+#wrapper{float:left;width:100%;}
+#column1 {margin-right:600px}
+#column2{float:left;width:300px;margin-left:-600px;}
+#column3{float:left;width:300px;margin-left:-300px;}
+#footer{clear:left;width:100%;background:#28313A;padding:15px 0px;color:#fff;text-align:center;border-top:4px solid #fff;}
+
+div.content{padding:15px;}
+
+.post{padding-bottom:20px;border-bottom:1px solid #eee;}
+
+.post .content{padding:0px;float:left;width:100%;}
+.post .content p{margin:5px 150px 5px 0px}
+.post .avatar{float:left;width:100px;margin-left:-100px;}
+.post .avatar img{width:80px;height:80px;}
+.post .statline{font-size:0.8em;}
+.post .statline a{color:#444;}
+
+.rightalign{text-align:right;}
+.centeralign{text-align:center;}
+
+.widget {width:100%;margin-bottom:60px;}
+.widget ul{list-style: none;padding-left:0px;margin-top:0px;}
+.widget li{}
+.widget li a{display:block;padding:5px;}
+.widget li a:hover{background:#369;color:#fff;}
+
+.book{border:1px solid #888;}
