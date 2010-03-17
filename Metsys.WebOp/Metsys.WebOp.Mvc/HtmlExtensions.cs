@@ -53,8 +53,7 @@ namespace Metsys.WebOp.Mvc
             string hash;
             return !Configuration.AssetHashes.TryGetValue(name, out hash) ? name : string.Concat(name, '?', hash);
         }
-        
-        
+                
         private static IDictionary<string, object> ToDictionary(object @object)
         {
              var properties = TypeDescriptor.GetProperties(@object);
