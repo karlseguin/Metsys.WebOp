@@ -52,13 +52,13 @@
     <p>The MVC Framework is really just a few extensions to the HtmlHelper class which let you generate tags for javascript, css and images. However, unlike normal tags, theses ones will take advantage of the combine and busting features of the runner. The most important thing is to configure WebOp in your application's start logic. Take a look at what this project does:</p>
     <pre>
     Mvc.WebOpConfiguration.Initialize
-    (
+    (                
         c =&gt; c.RootAssetPathIs(&quot;/assets/&quot;)
-            .AssetHashesFilePathIs(Server.MapPath(&quot;~/assets/hashes.dat&quot;))
-            .StylesAreIn(&quot;css&quot;)
+                .AssetHashesFileIs(&quot;hashes.dat&quot;)
+                .StylesAreIn(&quot;css&quot;)
     #if DEBUG
-            .EnableSmartDebug(Server.MapPath(&quot;~/assets/webop.dat&quot;))
-    #endif
+                .EnableSmartDebug()
+    #endif                        
     );
     </pre>
     <p>Everthing is pretty straight-forward. By default the framework assumes css files are stored in a folder name <code>styles</code> which is why we specifically overide it here (you can do the same for images and js files). We also tell it the path to our assets (this is something you'll always have to do), and since we want cache busting, we tell it the path to our generated hash files.</p>
@@ -77,7 +77,7 @@
     
     <h3>The Modules</h3><a name="module"></a>  
     <p>There are two modules in the package - you can use none, either or both. The first removes useless headers and adds long-lasting cache headers to any js, css or image files. The other serves up pre-zipped js or css files when possible.</p>
-    <p>The modules only works in IIS 7.0 integrated mode. While they aren't MVC specific, I figured it'd be better to put it here rather than having 2 separate assemblies.</p>
+    <p>The first module only works in IIS 7.0 integrated mode. While they aren't MVC specific, I figured it'd be better to put it here rather than having 2 separate assemblies.</p>
     <pre>
     &lt;system.webServer&gt;
         &lt;modules&gt;

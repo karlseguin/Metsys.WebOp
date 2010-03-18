@@ -6,18 +6,20 @@ namespace Metsys.WebOp.Mvc
     using System.Web;
     using System.Web.Caching;
 
-    public interface IConfiguration
+    public interface IInitialConfiguration
     {
         IConfiguration RootAssetPathIs(string path);
-        IConfiguration CommandFilePathIs(string path);
+    }
+    public interface IConfiguration
+    {        
         IConfiguration StylesAreIn(string folderName);
         IConfiguration ScriptsAreIn(string folderName);
         IConfiguration ImagesAreIn(string folderName);
-        IConfiguration AssetHashesFilePathIs(string path);        
+        IConfiguration AssetHashesFileIs(string file);        
         IConfiguration EnableSmartDebug();
     }
-    
-    public class Configuration : IConfiguration
+
+    public class Configuration : IInitialConfiguration, IConfiguration
     {        
         private const string _assetHashesCacheKey = "Metsys.WebOp.Mvc.AssetHashes";
         private static readonly Configuration _instance = new Configuration();
@@ -27,7 +29,7 @@ namespace Metsys.WebOp.Mvc
         }
 
         private string _rootAssetPath;
-        private string _commandFilePath;
+        private string _rootFullAssetPath;
         private string _stylesFolder = "styles";
         private string _scriptsFolder = "js";
         private string _imagesFolder = "images";
@@ -55,9 +57,17 @@ namespace Metsys.WebOp.Mvc
         {
             get { return _assetHashesFilePath; }
         }
+        internal string RootFullAssetPath
+        {
+            get { return _rootFullAssetPath; }
+        }
         internal bool SmartDebug
         {
             get { return _enableSmartDebug; }
+        }
+        internal string CommandFile
+        {
+            get { return string.Concat(_rootFullAssetPath, "\\webop.dat"); }
         }
         internal IDictionary<string, string> AssetHashes
         {
@@ -81,19 +91,9 @@ namespace Metsys.WebOp.Mvc
         {
             if (path == null) { throw new ArgumentNullException("path"); }
             _rootAssetPath = path.EndsWith("/") ? path.TrimEnd('/') : path;
+            _rootFullAssetPath = HttpContext.Current.Server.MapPath(_rootAssetPath);
             return this;
-        }
-
-        public IConfiguration CommandFilePathIs(string path)
-        {
-            if (path == null) { throw new ArgumentNullException("path"); }
-            
-            _commandFilePath = path;            
-            if (_enableSmartDebug) { LoadCombinedData(_commandFilePath); }
-            
-            return this;
-        }
-
+        }     
         public IConfiguration StylesAreIn(string folderName)
         {
             if (folderName == null) { throw new ArgumentNullException("folderName"); }
@@ -112,17 +112,17 @@ namespace Metsys.WebOp.Mvc
             _imagesFolder = folderName;
             return this;
         }
-        public IConfiguration AssetHashesFilePathIs(string path)
+        public IConfiguration AssetHashesFileIs(string file)
         {
-            if (path == null) { throw new ArgumentNullException("path"); }
-            _assetHashesFilePath = path;            
+            if (file == null) { throw new ArgumentNullException("file"); }
+            _assetHashesFilePath = string.Concat(_rootFullAssetPath, '\\', file);            
             return this;            
         }
 
         public IConfiguration EnableSmartDebug()
         {
             _enableSmartDebug = true;
-            if (!string.IsNullOrEmpty(_commandFilePath)) { LoadCombinedData(_commandFilePath); }
+            _combinedData = LoadCombinedData(CommandFile);
             return this;
         }
         
@@ -145,24 +145,54 @@ namespace Metsys.WebOp.Mvc
             return hashes;
         }
 
-        private void LoadCombinedData(string path)
+        private static IDictionary<string, string[]> LoadCombinedData(string path)
         {
-            _combinedData = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);            
-            foreach(var line in File.ReadAllLines(path))
+            var data = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
+            ParseCommandsLookingFor("combine", line =>
+               {
+                   var parts = line.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+                   if (parts.Length != 3) { return; }
+
+                   var key = parts[1].Trim().Replace("\\", "/");
+                   var files = parts[2].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                   for (var i = 0; i < files.Length; ++i)
+                   {
+                       files[i] = string.Concat('/', files[i].Trim().Replace("\\", "/"));
+                   }
+                   data[key] = files;
+               });
+            return data;
+
+        }
+
+        public static IDictionary<string, string> LoadZippedLookup()
+        {
+            var data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            ParseCommandsLookingFor("zip", line =>
             {
-                if (!line.Trim().ToLower().StartsWith("combine")) { continue; }
+                var parts = line.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length != 2) { return; }
 
-                var parts = line.Split(new[]{':'}, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length != 3){ continue; }
+                var files = parts[1].Split(new[]{','}, StringSplitOptions.RemoveEmptyEntries);
 
-                var key = parts[1].Trim().Replace("\\", "/");
-                var files = parts[2].Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
-                for (var i = 0; i < files.Length; ++i )
+                foreach(var file in files)
                 {
-                    files[i] = string.Concat('/', files[i].Trim().Replace("\\", "/"));
+                    var target = string.Concat(Instance._rootAssetPath, '\\', file.Trim());
+                    data[target.Replace('\\', '/')] = string.Concat(target, ".gz");
+                }                              
+            });
+            return data;
+        }
+
+        private static void ParseCommandsLookingFor(string commandName, Action<string> action)
+        {            
+            foreach (var line in File.ReadAllLines(Instance.CommandFile))
+            {
+                if (line.Trim().ToLower().StartsWith(commandName))
+                {
+                    action(line);
                 }
-                _combinedData[key] = files;
-            }
+            }            
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Metsys.WebOp.Mvc
     {
         private WebOpConfiguration(){}
         
-        public static void Initialize(Action<IConfiguration> action)
+        public static void Initialize(Action<IInitialConfiguration> action)
         {
             action(Configuration.Instance);
         }

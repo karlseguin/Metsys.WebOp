@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Metsys.WebOp.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\LibrariesForSample\Metsys.WebOp.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -63,12 +67,6 @@
     <Content Include="assets\js\jquery.rollover.js" />
     <Content Include="assets\js\web.js" />
     <None Include="assets\webop.dat" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Metsys.WebOp\Metsys.WebOp.Mvc\Metsys.WebOp.Mvc.csproj">
-      <Project>{856E9262-61C1-4B01-8874-107E1E8440F2}</Project>
-      <Name>Metsys.WebOp.Mvc</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
