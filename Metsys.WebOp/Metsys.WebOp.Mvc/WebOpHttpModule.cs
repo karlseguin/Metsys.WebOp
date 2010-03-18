@@ -18,16 +18,18 @@ namespace Metsys.WebOp.Mvc
 
         private void OnRequestEnd(object sender, EventArgs e)
         {    
-            var context = HttpContext.Current;
-            _headersToRemove.ForEach(h => context.Response.Headers.Remove(h));
-            var extension = Path.GetExtension(context.Request.Url.AbsolutePath);
+#if !DEBUG  
+            //doesn't work great in Cassini + you don't want caching on while developing.
+            //HttpContext.Current can be null within OnPreSendRequestHeaders, so we do this here
+            var context = HttpContext.Current;            
+            _headersToRemove.ForEach(h => context.Response.Headers.Remove(h));                        
+            var extension = Path.GetExtension(context.Request.Url.AbsolutePath); 
             if (_longCacheExtensions.Contains(extension))
             {
-#if !DEBUG
                 context.Response.CacheControl = "Public";
                 context.Response.Expires = 44000; //slightly over 1 month
-#endif
             }
+#endif
         }
     }
 }

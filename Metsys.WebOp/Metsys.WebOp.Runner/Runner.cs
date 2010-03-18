@@ -7,7 +7,7 @@ namespace Metsys.WebOp.Runner
     {
         private readonly string _root;
         private readonly string _commandFile;
-        private const string _commandFileName = "webop.config";
+        private const string _commandFileName = "webop.dat";
         
         
         public Runner(string root)
