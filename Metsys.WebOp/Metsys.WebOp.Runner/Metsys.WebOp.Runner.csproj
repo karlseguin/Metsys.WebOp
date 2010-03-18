@@ -49,6 +49,7 @@
     <Compile Include="Commands\BustingCommand.cs" />
     <Compile Include="Commands\CombineCommand.cs" />
     <Compile Include="Commands\CommandParser.cs" />
+    <Compile Include="Commands\ZipCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ShrinkCommand.cs" />
     <Compile Include="Crc32.cs" />

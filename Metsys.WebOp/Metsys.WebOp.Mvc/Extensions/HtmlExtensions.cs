@@ -13,13 +13,11 @@ namespace Metsys.WebOp.Mvc.Extensions
 
         public static string IncludeCss(this HtmlHelper html, string name)
         {
-#if DEBUG
             if (_configuration.SmartDebug)
             {
-                var output = SmartOutput(string.Format("{0}/{1}.js", _configuration.StylesFolder, name), IncludeCss);
+                var output = SmartOutput(string.Format("{0}/{1}.css", _configuration.StylesFolder, name), IncludeCss);
                 if (output != null) { return output; }
             }
-#endif
             return IncludeCss(GetAssetPath(string.Format("/{0}/{1}.css", _configuration.StylesFolder, name)));            
         }
         private static string IncludeCss(string file)
@@ -28,13 +26,11 @@ namespace Metsys.WebOp.Mvc.Extensions
         }
         public static string IncludeJs(this HtmlHelper html, string name)
         {
-#if DEBUG
             if (_configuration.SmartDebug)
             {
                 var output = SmartOutput(string.Format("{0}/{1}.js", _configuration.ScriptsFolder, name), IncludeJs);
                 if (output != null) { return output; }
             }
-#endif
             return IncludeJs(GetAssetPath(string.Format("/{0}/{1}.js", _configuration.ScriptsFolder, name)));            
         }
         private static string IncludeJs(string file)

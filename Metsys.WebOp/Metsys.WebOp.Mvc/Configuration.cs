@@ -9,16 +9,16 @@ namespace Metsys.WebOp.Mvc
     public interface IConfiguration
     {
         IConfiguration RootAssetPathIs(string path);
+        IConfiguration CommandFilePathIs(string path);
         IConfiguration StylesAreIn(string folderName);
         IConfiguration ScriptsAreIn(string folderName);
         IConfiguration ImagesAreIn(string folderName);
-        IConfiguration AssetHashesFilePathIs(string path);
-        IConfiguration EnableSmartDebug(string path);
+        IConfiguration AssetHashesFilePathIs(string path);        
+        IConfiguration EnableSmartDebug();
     }
     
     public class Configuration : IConfiguration
-    {
-        
+    {        
         private const string _assetHashesCacheKey = "Metsys.WebOp.Mvc.AssetHashes";
         private static readonly Configuration _instance = new Configuration();
         internal static Configuration Instance
@@ -27,6 +27,7 @@ namespace Metsys.WebOp.Mvc
         }
 
         private string _rootAssetPath;
+        private string _commandFilePath;
         private string _stylesFolder = "styles";
         private string _scriptsFolder = "js";
         private string _imagesFolder = "images";
@@ -79,9 +80,20 @@ namespace Metsys.WebOp.Mvc
         public IConfiguration RootAssetPathIs(string path)
         {
             if (path == null) { throw new ArgumentNullException("path"); }
-            _rootAssetPath = path;
+            _rootAssetPath = path.EndsWith("/") ? path.TrimEnd('/') : path;
             return this;
         }
+
+        public IConfiguration CommandFilePathIs(string path)
+        {
+            if (path == null) { throw new ArgumentNullException("path"); }
+            
+            _commandFilePath = path;            
+            if (_enableSmartDebug) { LoadCombinedData(_commandFilePath); }
+            
+            return this;
+        }
+
         public IConfiguration StylesAreIn(string folderName)
         {
             if (folderName == null) { throw new ArgumentNullException("folderName"); }
@@ -106,13 +118,14 @@ namespace Metsys.WebOp.Mvc
             _assetHashesFilePath = path;            
             return this;            
         }
-        public IConfiguration EnableSmartDebug(string path)
+
+        public IConfiguration EnableSmartDebug()
         {
-            _enableSmartDebug = true;            
-            LoadCombinedData(path);
+            _enableSmartDebug = true;
+            if (!string.IsNullOrEmpty(_commandFilePath)) { LoadCombinedData(_commandFilePath); }
             return this;
         }
-
+        
         private IDictionary<string, string> ParseAndCacheAssetHashes()
         {
             if (_assetHashesFilePath == null)

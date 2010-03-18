@@ -1,6 +1,3 @@
-//image rollover that takes advantage of the cache-busting hash
-//copy and paste this to your project
-//requires jquery
 (function($) 
 {
     $.fn.rollover = function() 

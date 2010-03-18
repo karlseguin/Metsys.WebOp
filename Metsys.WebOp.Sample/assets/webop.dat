@@ -1,5 +1,5 @@
 #combine JS files
-combine: js\all.js: js\debug\jquery.js, js\debug\jquery.validate.js
+combine: js\all.js: js\jquery.js, js\jquery.rollover.js, js\web.js
 
 #combine css files
 combine: css\merged.css: css\reset.css, css\main.css
@@ -8,4 +8,7 @@ combine: css\merged.css: css\reset.css, css\main.css
 shrink: js\all.js, css\merged.css
 
 #generate cache-busting resource hashes
-busting: hashes.txt
+busting: hashes.dat
+
+#pre-zip our files
+zip: js\all.js, css\merged.css

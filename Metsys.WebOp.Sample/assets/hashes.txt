@@ -1,7 +1,0 @@
-/css/main.css|ac054c14
-/css/merged.css|806f85ca
-/css/reset.css|e7783565
-/images/body_background.gif|b6a12700
-/js/debug/jquery.js|646f9714
-/js/debug/jquery.validate.js|4a16a12b
-/js/all.js|794b4ecb

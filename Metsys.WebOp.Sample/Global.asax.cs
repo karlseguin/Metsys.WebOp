@@ -15,6 +15,17 @@
         {
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
+            
+            Mvc.WebOpConfiguration.Initialize
+            (
+                c => c.RootAssetPathIs("/assets/")
+                        .CommandFilePathIs(Server.MapPath("~/assets/webop.dat"))
+                        .AssetHashesFilePathIs(Server.MapPath("~/assets/hashes.dat"))
+                        .StylesAreIn("css")
+#if DEBUG
+                        .EnableSmartDebug()
+#endif                        
+            );
         }
     }
 }

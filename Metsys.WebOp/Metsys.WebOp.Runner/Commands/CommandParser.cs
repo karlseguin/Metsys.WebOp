@@ -11,6 +11,7 @@ namespace Metsys.WebOp.Runner
             {"combine", s => new CombineCommand(s)},
             {"shrink", s => new ShrinkCommand(s)},
             {"busting", s => new BustingCommand(s)},
+            {"zip", s => new ZipCommand(s)},
         };
         public static IList<ICommand> Parse(string file)
         {
