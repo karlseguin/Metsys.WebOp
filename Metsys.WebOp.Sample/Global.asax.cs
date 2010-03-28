@@ -18,7 +18,9 @@
             
             Mvc.WebOpConfiguration.Initialize
             (                
-                c => c.RootAssetPathIs("/assets/")
+                //first argument could be something like http://cdn.mysite.com/assets/     
+                c => c.RootAssetPathIs("/assets/", Server.MapPath("/assets/"))
+                        
                         .AssetHashesFileIs("hashes.dat")
                         .StylesAreIn("css")
 #if DEBUG

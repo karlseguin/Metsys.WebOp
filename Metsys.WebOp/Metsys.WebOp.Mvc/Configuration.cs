@@ -8,7 +8,7 @@ namespace Metsys.WebOp.Mvc
 
     public interface IInitialConfiguration
     {
-        IConfiguration RootAssetPathIs(string path);
+        IConfiguration RootAssetPathIs(string relative, string full);
     }
     public interface IConfiguration
     {        
@@ -29,7 +29,7 @@ namespace Metsys.WebOp.Mvc
         }
 
         private string _rootAssetPath;
-        private string _rootFullAssetPath;
+        private string _fullAssetPath;
         private string _stylesFolder = "styles";
         private string _scriptsFolder = "js";
         private string _imagesFolder = "images";
@@ -57,9 +57,9 @@ namespace Metsys.WebOp.Mvc
         {
             get { return _assetHashesFilePath; }
         }
-        internal string RootFullAssetPath
+        internal string FullAssetPath
         {
-            get { return _rootFullAssetPath; }
+            get { return _fullAssetPath; }
         }
         internal bool SmartDebug
         {
@@ -67,7 +67,7 @@ namespace Metsys.WebOp.Mvc
         }
         internal string CommandFile
         {
-            get { return string.Concat(_rootFullAssetPath, "\\webop.dat"); }
+            get { return string.Concat(_fullAssetPath, "\\webop.dat"); }
         }
         internal IDictionary<string, string> AssetHashes
         {
@@ -86,14 +86,15 @@ namespace Metsys.WebOp.Mvc
         }
 
         private Configuration(){}
-        
-        public IConfiguration RootAssetPathIs(string path)
+
+        public IConfiguration RootAssetPathIs(string relative, string full)
         {
-            if (path == null) { throw new ArgumentNullException("path"); }
-            _rootAssetPath = path.EndsWith("/") ? path.TrimEnd('/') : path;
-            _rootFullAssetPath = HttpContext.Current.Server.MapPath(_rootAssetPath);
+            if (relative == null) { throw new ArgumentNullException("path"); }
+            if (full == null) { throw new ArgumentNullException("full"); }
+            _rootAssetPath = relative.EndsWith("/") ? relative.TrimEnd('/') : relative;
+            _fullAssetPath = full;
             return this;
-        }     
+        }         
         public IConfiguration StylesAreIn(string folderName)
         {
             if (folderName == null) { throw new ArgumentNullException("folderName"); }
@@ -115,7 +116,7 @@ namespace Metsys.WebOp.Mvc
         public IConfiguration AssetHashesFileIs(string file)
         {
             if (file == null) { throw new ArgumentNullException("file"); }
-            _assetHashesFilePath = string.Concat(_rootFullAssetPath, '\\', file);            
+            _assetHashesFilePath = string.Concat(_fullAssetPath, '\\', file);            
             return this;            
         }
 
