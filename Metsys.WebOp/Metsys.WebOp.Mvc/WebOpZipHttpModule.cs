@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using System.IO;
-
 namespace Metsys.WebOp.Mvc
 {
     using System;
     using System.Web;
+    using System.Collections.Generic;
+    using System.IO;
 
     public class WebOpZipHttpModule : IHttpModule
     {
@@ -14,10 +13,11 @@ namespace Metsys.WebOp.Mvc
             {".js", "application/x-javascript"},
         };
 
-        private readonly static IDictionary<string, string> _zippedFiles = Configuration.LoadZippedLookup();      
+        private static IDictionary<string, string> _zippedFiles;
 
         public void Init(HttpApplication context)
         {
+            _zippedFiles = Configuration.LoadZippedLookup();      
             context.BeginRequest += OnBeginRequest;
         }
 
