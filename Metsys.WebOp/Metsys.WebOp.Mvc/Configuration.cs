@@ -15,8 +15,9 @@ namespace Metsys.WebOp.Mvc
         IConfiguration StylesAreIn(string folderName);
         IConfiguration ScriptsAreIn(string folderName);
         IConfiguration ImagesAreIn(string folderName);
-        IConfiguration AssetHashesFileIs(string file);        
+        IConfiguration AssetHashesFileIs(string file);
         IConfiguration EnableSmartDebug();
+        IConfiguration EnableSmartDebug(bool enabled);
     }
 
     public class Configuration : IInitialConfiguration, IConfiguration
@@ -122,11 +123,16 @@ namespace Metsys.WebOp.Mvc
 
         public IConfiguration EnableSmartDebug()
         {
-            _enableSmartDebug = true;
+            return EnableSmartDebug(true);
+        }
+
+        public IConfiguration EnableSmartDebug(bool enabled)
+        {
+            _enableSmartDebug = enabled;
             _combinedData = LoadCombinedData(CommandFile);
             return this;
         }
-        
+
         private IDictionary<string, string> ParseAndCacheAssetHashes()
         {
             if (_assetHashesFilePath == null)
