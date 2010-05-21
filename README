@@ -1,0 +1,13 @@
+h2. Metsys.WebOp
+
+Metsys.WebOp is a web optimization framework for ASP.NET MVC. The goal is to provide developers with an easy way to implement best practices with respect to website loading speeds.
+
+Metsys.WebOp focuses on implementing a number of small improvements at build-time. This results in a slightly more complex setup while providing slightly better performance.
+
+h2. Usage
+
+The project comes with a sample MVC application which both demos the library as well as documents it.
+
+h2. Alternatives
+
+Justin Etheredge's "SquishIt":http://github.com/jetheredge/SquishIt is a similar framework with a focus on run-time optimizations. SquishIt is easier to use.
