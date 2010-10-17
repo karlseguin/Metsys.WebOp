@@ -12,6 +12,7 @@ namespace Metsys.WebOp.Runner
         
         public Runner(string root)
         {
+            root = root.Trim('"');
             if (string.IsNullOrEmpty(root) || !Directory.Exists(root))
             {
                 throw new ArgumentException(string.Format("{0} is not a valid directory", root));
