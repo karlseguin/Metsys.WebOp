@@ -129,7 +129,7 @@ namespace Metsys.WebOp.Mvc
         public IConfiguration EnableSmartDebug(bool enabled)
         {
             _enableSmartDebug = enabled;
-            _combinedData = LoadCombinedData(CommandFile);
+            _combinedData = LoadCombinedData();
             return this;
         }
 
@@ -152,7 +152,7 @@ namespace Metsys.WebOp.Mvc
             return hashes;
         }
 
-        private static IDictionary<string, string[]> LoadCombinedData(string path)
+        private static IDictionary<string, string[]> LoadCombinedData()
         {
             var data = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
             ParseCommandsLookingFor("combine", line =>
@@ -192,14 +192,30 @@ namespace Metsys.WebOp.Mvc
         }
 
         private static void ParseCommandsLookingFor(string commandName, Action<string> action)
-        {            
+        {
+            var lines = new List<string>();
+            var isInCommand = false;
             foreach (var line in File.ReadAllLines(Instance.CommandFile))
             {
-                if (line.Trim().ToLower().StartsWith(commandName))
+                var l = line.Trim().ToLower();
+                if (l.StartsWith(commandName))
                 {
-                    action(line);
+                    lines.Add(l);
+                    isInCommand = true;                    
+                } 
+                else if (isInCommand && l.StartsWith("-"))
+                {
+                    lines[lines.Count - 1] += "," + l.Substring(1);
                 }
-            }            
+                else
+                {
+                    isInCommand = false;
+                }
+            }
+            foreach(var line in lines)
+            {
+                action(line);
+            }
         }
     }
 }

@@ -86,7 +86,7 @@ namespace Metsys.WebOp.Mvc.Extensions
             return sb.ToString();
         }
                 
-        private static IDictionary<string, object> ToDictionary(object @object)
+        private static IEnumerable<KeyValuePair<string, object>> ToDictionary(object @object)
         {
              var properties = TypeDescriptor.GetProperties(@object);
              var hash = new Dictionary<string, object>(properties.Count);
