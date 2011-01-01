@@ -1,5 +1,8 @@
 #combine JS files
-combine: js\all.js: js\jquery.js, js\jquery.rollover.js, js\web.js
+combine: js\all.js:
+- js\jquery.js
+- js\jquery.rollover.js
+- js\web.js
 
 #combine css files
 combine: css\merged.css: css\reset.css, css\main.css

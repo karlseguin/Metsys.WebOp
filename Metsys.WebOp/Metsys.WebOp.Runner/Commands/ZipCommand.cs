@@ -1,20 +1,34 @@
 namespace Metsys.WebOp.Runner
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.IO.Compression;
     
     public class ZipCommand: ICommand
     {        
-        private readonly string[] _inputs;
+        private readonly IList<string> _inputs;
 
-        public ZipCommand(string[] arguments)
+        public ZipCommand(IList<string> arguments)
         {
-            if (arguments.Length != 2)
+            if (arguments.Count < 1)
             {
                 throw new Exception("Zip command should have 2 arguments");
             }
-            _inputs = arguments[1].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            _inputs = new List<string>();
+            if (arguments.Count == 2)
+            {
+                foreach (var parameter in arguments[1].Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    AddParameter(parameter);
+                }
+            }
+        }
+    
+
+        public void AddParameter(string parameter)
+        {
+            _inputs.Add(parameter);
         }
 
         public void Execute(string rootPath)

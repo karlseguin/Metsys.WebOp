@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">    
     <p>This is a sample website that shows how to use Metsys.WebOp within your own application. There are three main components:</p>
@@ -24,6 +24,17 @@
     combine: css\merged.css: css\reset.css, css\main.css
     </pre>
     <p>The first combines the three javascript files into a file called <code>js\all.js</code>, the second combines the two css files into <code>css\merged.css</code></p>
+    
+    <p>As an alternative to providing a list of comma-separated files to combine is to place each file on its own line starting with a dash:</p>
+    
+    <pre>
+    combine: js\all.js:
+    - js\jquery.js
+    - js\jquery.rollover.js
+    - js\web.js    
+    </pre>
+    
+    <p>This can look nicer when you have a lot of files</p>
     
     <h4>Shrink</h4>
     <p>Shrink is used to minify javascript and css files. It takes 1 input, the array of files to shrink. Here's what we have in the sample project:</p>

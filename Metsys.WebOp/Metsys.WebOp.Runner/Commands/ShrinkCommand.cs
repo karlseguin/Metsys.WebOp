@@ -12,16 +12,28 @@ namespace Metsys.WebOp.Runner
             {".js", input => JavaScriptCompressor.Compress(input)},
             {".css", input => CssCompressor.Compress(input)},
         };
-        
-        private readonly string[] _inputs;
 
-        public ShrinkCommand(string[] arguments)
+        private readonly IList<string> _inputs;
+
+        public ShrinkCommand(IList<string> arguments)
         {
-            if (arguments.Length != 2)
+            if (arguments.Count < 1)
             {
                 throw new Exception("Shrink command should have 2 arguments");
             }
-            _inputs = arguments[1].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            _inputs = new List<string>();
+            if (arguments.Count == 2)
+            {                
+                foreach (var parameter in arguments[1].Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    AddParameter(parameter);
+                }
+            }
+        }
+
+        public void AddParameter(string parameter)
+        {
+            _inputs.Add(parameter);
         }
 
         public void Execute(string rootPath)
@@ -41,5 +53,6 @@ namespace Metsys.WebOp.Runner
                 File.WriteAllText(file, _compressors[extension](contents));                
             }            
         }
+
     }
 }

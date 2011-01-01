@@ -20,8 +20,13 @@ namespace Metsys.WebOp.Runner
             {
                 while (sr.Peek() >= 0)
                 {
-                    var line = sr.ReadLine();
+                    var line = sr.ReadLine().Trim();
                     if (string.IsNullOrEmpty(line) || line.StartsWith("#")){continue;}
+                    if (line.StartsWith("-") && commands.Count > 0)
+                    {
+                        commands[commands.Count - 1].AddParameter(line.Substring(1));
+                        continue;
+                    }
                     
                     var command = ParseLine(line);
                     if (command == null)

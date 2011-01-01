@@ -34,6 +34,8 @@ namespace Metsys.WebOp.Runner
             ProcessStyleSheets(rootPath);                      
         }
 
+        public void AddParameter(string parameter){}
+
         private static void OutputFile(string output)
         {
             using (var sw = new StreamWriter(output))
