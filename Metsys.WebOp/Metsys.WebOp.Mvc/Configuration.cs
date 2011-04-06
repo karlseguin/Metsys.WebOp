@@ -24,7 +24,7 @@ namespace Metsys.WebOp.Mvc
     {        
         private const string _assetHashesCacheKey = "Metsys.WebOp.Mvc.AssetHashes";
         private static readonly Configuration _instance = new Configuration();
-        internal static Configuration Instance
+        public static Configuration Instance
         {
             get { return _instance; }
         }
@@ -38,39 +38,39 @@ namespace Metsys.WebOp.Mvc
         private bool _enableSmartDebug;
         private IDictionary<string, string[]> _combinedData;
         
-        internal string RootAssetPath
+        public string RootAssetPath
         {
             get { return _rootAssetPath; }
         }
-        internal string StylesFolder
+        public string StylesFolder
         {
             get { return _stylesFolder; }
         }
-        internal string ScriptsFolder
+        public string ScriptsFolder
         {
             get { return _scriptsFolder; }
         }
-        internal string ImagesFolder
+        public string ImagesFolder
         {
             get { return _imagesFolder; }
         }
-        internal string AssetFilePath
+        public string AssetFilePath
         {
             get { return _assetHashesFilePath; }
         }
-        internal string FullAssetPath
+        public string FullAssetPath
         {
             get { return _fullAssetPath; }
         }
-        internal bool SmartDebug
+        public bool SmartDebug
         {
             get { return _enableSmartDebug; }
         }
-        internal string CommandFile
+        public string CommandFile
         {
             get { return string.Concat(_fullAssetPath, "\\webop.dat"); }
         }
-        internal IDictionary<string, string> AssetHashes
+        public IDictionary<string, string> AssetHashes
         {
             get
             {
