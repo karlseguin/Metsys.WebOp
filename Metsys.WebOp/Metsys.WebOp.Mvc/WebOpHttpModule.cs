@@ -21,7 +21,7 @@ namespace Metsys.WebOp.Mvc
 #if !DEBUG  
             //doesn't work great in Cassini + you don't want caching on while developing.
             //HttpContext.Current can be null within OnPreSendRequestHeaders, so we do this here
-            var context = HttpContext.Current;            
+            var context = HttpContext.Current;
             _headersToRemove.ForEach(h => context.Response.Headers.Remove(h));
             var extension = Path.GetExtension(context.Request.Url.AbsolutePath); 
             if (_longCacheExtensions.Contains(extension))

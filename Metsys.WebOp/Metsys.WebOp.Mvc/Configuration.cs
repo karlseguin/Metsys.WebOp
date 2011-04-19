@@ -74,16 +74,28 @@ namespace Metsys.WebOp.Mvc
         {
             get
             {
-                return (IDictionary<string, string>)HttpRuntime.Cache[_assetHashesCacheKey] ?? ParseAndCacheAssetHashes();                
+                return (IDictionary<string, string>)HttpRuntime.Cache[_assetHashesCacheKey] ?? ParseAndCacheAssetHashes();
             }
         }
         internal string[] GetCombinedFrom(string path)
-        {            
-            if (_combinedData == null || !_combinedData.ContainsKey(path))
-            {
-                return null;          
-            }
-            return _combinedData[path];
+        {
+           if (_combinedData == null || !_combinedData.ContainsKey(path))
+           {
+              return null;
+           }
+           var files = new List<string>();
+           foreach (var file in _combinedData[path])
+           {
+              if (_combinedData.ContainsKey(file.TrimStart('/')))
+              {
+                 files.AddRange(GetCombinedFrom(file.TrimStart('/')));
+              }
+              else
+              {
+                 files.Add(file);
+              }
+           }
+           return files.ToArray();
         }
 
         private Configuration(){}
